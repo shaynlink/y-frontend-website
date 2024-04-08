@@ -71,5 +71,5 @@ jobs:
     - name: Upload to cloud storage
       uses: google-github-actions/upload-cloud-storage@v2
       with:
-        path: ./bin
+        path: ./dist
         destination: ${{ env.BUCKET_NAME }}
