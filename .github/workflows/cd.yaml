@@ -60,13 +60,17 @@ jobs:
     - name: Display structure of downloaded files
       run: ls -R ./dist
 
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        project_id: crossroads-413509
+        workload_identity_provider: projects/593028135369/locations/global/workloadIdentityPools/y-github-action-pool/attribute.repository/shaynlink/y-frontend-website
+        service_account: github-actions@crossroads-413509.iam.gserviceaccount.com
+
     - name: Setup gloud
       uses: google-github-actions/setup-gcloud@v2
       with:
         version: latest
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
 
     - name: Upload to cloud storage
       uses: google-github-actions/upload-cloud-storage@v2
