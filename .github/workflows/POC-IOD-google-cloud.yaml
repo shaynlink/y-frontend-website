@@ -25,5 +25,5 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           project_id: crossroads-413509
-          workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers/github'
+          workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers'
           service_account: github@crossroads-413509.iam.gserviceaccount.com
