@@ -69,11 +69,12 @@ jobs:
         project_id: crossroads-413509
         workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers/github'
         service_account: github@crossroads-413509.iam.gserviceaccount.com
+        token_format: 'access_token'
 
-    - name: Setup gloud
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        version: latest
+    # - name: Setup gloud
+    #   uses: google-github-actions/setup-gcloud@v2
+    #   with:
+    #     version: latest
 
     - name: Upload to cloud storage
       uses: google-github-actions/upload-cloud-storage@v2
