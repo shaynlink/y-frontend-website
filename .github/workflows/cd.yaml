@@ -65,10 +65,11 @@ jobs:
     - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v2
       with:
-        project_id: crossroads-413509
-        workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers/github'
-        service_account: github@crossroads-413509.iam.gserviceaccount.com
-        create_credentials_file: true
+        # project_id: crossroads-413509
+        # workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers/github'
+        # service_account: github@crossroads-413509.iam.gserviceaccount.com
+        # create_credentials_file: true
+        credentials_json: ${{ secrets.GCP_JSON_CRED }}
 
     - name: Setup gloud
       uses: google-github-actions/setup-gcloud@v2
