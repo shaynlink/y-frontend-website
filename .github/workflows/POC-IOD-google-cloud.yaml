@@ -1,0 +1,29 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+  
+name: Proof Of Concept OPENID workload identity federation on Google Cloud Platform
+
+env:
+  BUCKET_NAME: stk.re
+
+jobs:
+  authenticate:
+    name: Authentification to Google Cloud Platform
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout repository'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          project_id: crossroads-413509
+          workload_identity_provider: 'projects/593028135369/locations/global/workloadIdentityPools/githubactions/providers/github'
+          service_account: github@crossroads-413509.iam.gserviceaccount.com
