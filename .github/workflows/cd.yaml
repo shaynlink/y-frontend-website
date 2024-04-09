@@ -67,7 +67,7 @@ jobs:
       uses: google-github-actions/auth@v2
       with:
         project_id: crossroads-413509
-        workload_identity_provider: projects/593028135369/locations/global/workloadIdentityPools/y-github-action-pool/attribute.repository/shaynlink/y-frontend-website
+        workload_identity_provider: projects/593028135369/locations/global/workloadIdentityPools/github-pool/attribute.repository/shaynlink/y-frontend-website
         service_account: github-actions@crossroads-413509.iam.gserviceaccount.com
 
     - name: Setup gloud
