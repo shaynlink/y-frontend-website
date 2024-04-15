@@ -9,6 +9,13 @@ async function fakeAxios(key: string, predicate: any) {
     }, 2000);
   });
 }
+async function fakeAxiosPost(key: string, predicate: any) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve((mockuppost as Record<string, any[]>)[key].filter(predicate));
+    }, 2000);
+  });
+}
 
 export async function loginFn(email: string, password: string) {
   // axios.post('/auth/login', { body: { email, password }}) 
@@ -17,5 +24,10 @@ export async function loginFn(email: string, password: string) {
 
 export async function getPosts() {
   // axios.get('/posts')
-  return await fakeAxios('posts', () => true);
+  return await fakeAxiosPost('post', () => true) || [];
+}
+
+export async function getPost(id: string ) {
+  // axios.get(`/posts/${id}`)
+  return await fakeAxiosPost('post', (post) => post.id === id);
 }

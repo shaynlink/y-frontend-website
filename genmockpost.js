@@ -13,9 +13,16 @@ function bootstrap() {
   for (let i = 0; i < MAX_RECORDS; i++) {
     data.post.push({
       id: faker.string.uuid(),
-      userId: faker.string.uuid(),
+      user:{
+        userId: faker.string.uuid(),
+        name: faker.internet.userName(),
+        avatar: faker.image.avatar()
+      },
       content: faker.lorem.paragraph(),
-      timestamp: faker.date.past()
+      timestamp: faker.date.past(),
+      likes: [faker.string.uuid()],
+      comments: [faker.lorem.paragraph()],
+      reposts: [faker.string.uuid()],
     });
   }
 

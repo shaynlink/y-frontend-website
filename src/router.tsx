@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Layout from "./layouts/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Feed from "./pages/Feed";
+import PostPage from './pages/PostPage';
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
     {
       path: '/feed',
       element: <Feed />
+    },
+    {
+      path: '/post/:id',
+      element: <PostPage />
     }
   ]);
 
