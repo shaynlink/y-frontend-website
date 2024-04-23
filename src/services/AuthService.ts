@@ -30,6 +30,10 @@ export async function getPosts() {
   // axios.get('/posts')
   return await fakeAxiosPost('post', () => true) || [];
 }
+export async function getFollowingPosts() {
+  // axios.get('/posts/following')
+  return await fakeAxiosPost('post', () => true) || [];
+}
 
 export async function getPost(id: string ) {
   // axios.get(`/posts/${id}`)

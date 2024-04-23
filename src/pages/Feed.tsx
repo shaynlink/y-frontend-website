@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Post from '../components/Post';
-import { getPosts } from '../services/AuthService';
+import { getPosts, getFollowingPosts } from '../services/AuthService';
 import { Post as PostType } from '../type';
-
 
 function Feed() {
   const [posts, setPosts] = useState<PostType[]>([]);
-
-  /*useEffect(() => {
-    fetch('url-vers-votre-api/posts')
-      .then((response) => response.json())
-      .then((data) => setPosts(data))
-      .catch((error) => console.error("Erreur lors de la récupération des Posts", error));
-  }, []);*/
-
+  const [feedType, setFeedType] = useState('pourVous');  // 'pourVous' ou 'abonnements'
 
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const data = await getPosts();
+        let data;
+        if (feedType === 'pourVous') {
+          data = await getPosts();  // Charger les posts pour l'onglet "Pour vous"
+        } 
+        else if (feedType === 'abonnements') {
+          data = await getFollowingPosts();  // Charger les posts pour l'onglet "Abonnements"
+        }
         console.log(data);
         setPosts(data);
       } catch (error) {
@@ -26,10 +24,14 @@ function Feed() {
       }
     };
     loadPosts();
-  }, []);
+  }, [feedType]);  // Ré-exécuter l'effet lorsque feedType change
 
   return (
     <div>
+      <div>
+        <button onClick={() => setFeedType('pourVous')}>Pour Vous</button>
+        <button onClick={() => setFeedType('abonnements')}>Abonnements</button>
+      </div>
       {posts.map((post) => (
         <Post 
           key={post.id} 

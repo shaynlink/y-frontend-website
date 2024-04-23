@@ -17,41 +17,43 @@ const router = createBrowserRouter([
           element: <Home />,
           index: true
         },
+        {
+          path: '/feed',
+          element: <Feed />,
+          index: true
+        },
+        {
+          path: '/post/:id',
+          element: <PostPage />,
+          index: true
+        },
+        {
+          path: '/Profile/:id',
+          element: <Profil />,
+          children: [
+            {
+              path: '/Profile/:id/Followers',
+              element: <div>Followers</div>
+            },
+            {
+              path: '/Profile/:id/Following',
+              element: <div>Following</div>
+            },
+            {
+              path: '/Profile/:id/Posts',
+              element: <div>Posts</div>
+            }
+          ],
+        },
+        {
+          path: '/Profile/:id/Settings',
+          element: <Settings />
+        }
       ],
     },
     {
       path: '/login',
       element: <Login />
-    },
-    {
-      path: '/feed',
-      element: <Feed />
-    },
-    {
-      path: '/post/:id',
-      element: <PostPage />
-    },
-    {
-      path: '/Profile/:id',
-      element: <Profil />,
-      children: [
-        {
-          path: '/Profile/:id/Followers',
-          element: <div>Followers</div>
-        },
-        {
-          path: '/Profile/:id/Following',
-          element: <div>Following</div>
-        },
-        {
-          path: '/Profile/:id/Posts',
-          element: <div>Posts</div>
-        }
-      ],
-    },
-    {
-      path: '/Profile/:id/Settings',
-      element: <Settings />
     },   
     {
       path: '*',
