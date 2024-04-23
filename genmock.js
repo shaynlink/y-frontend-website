@@ -15,7 +15,11 @@ function bootstrap() {
       id: faker.string.uuid(),
       name: faker.internet.userName(),
       email: faker.internet.email(),
-      password: faker.internet.password()
+      password: faker.internet.password(),
+      avatar: faker.image.avatar(),
+      posts: [faker.string.uuid()],
+      followers: [faker.string.uuid()],
+      following: [faker.string.uuid()],
     });
   }
 
