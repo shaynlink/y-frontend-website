@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Post as PostType } from '../type'
+import { Post as PostType } from '../type' 
 
 interface PostProps {
   currentPost: PostType;
@@ -9,32 +9,31 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const [post, setPosts] = useState<PostType>(currentPost);
   const userId = "currentUserId";
 
-  console.log(post);
-
   const handleLike = (postId: string, userId: string) => {
-    setPosts(post => {
-      if (post.id === postId && !post.likes.includes(userId)) {
-        return { ...post, likes: [...post.likes, userId] };
+    setPosts(prevPost => {
+      if (!prevPost.likes.includes(userId)) {
+        return { ...prevPost, likes: [...prevPost.likes, userId] };
       }
-      return post;
+      return prevPost;
     });
   };
 
   const handleRepost = (postId: string, userId: string) => {
-    setPosts(post => {
-      if (post.id === postId && !post.reposts.includes(userId)) {
-        return { ...post, reposts: [...post.reposts, userId] };
+    setPosts(prevPost => {
+      if (!prevPost.reposts.includes(userId)) {
+        return { ...prevPost, reposts: [...prevPost.reposts, userId] };
       }
-      return post;
+      return prevPost;
     });
   };
 
-  const handleComment = (id: string) => {
-    /** @TODO **/  
-    // Cette fonction pourrait ouvrir un formulaire de commentaire ou gérer les commentaires différemment
-    console.log('Open comment modal for Tweet ID:', id);
+  const handleShare = () => {
+    const postUrl = `${window.location.origin}/post/${post.id}`;
+    navigator.clipboard.writeText(postUrl)
+      .then(() => alert('Link copied to clipboard!'))
+      .catch(err => console.error('Could not copy text: ', err));
   };
-  
+
   return (
     <div className="post">
       <div className="post-header">
@@ -46,11 +45,12 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       <span>{new Date(post.timestamp).toLocaleString()}</span>
       <div className="actions">
         <button onClick={() => handleLike(post.id, userId)}>Like ({post.likes.length})</button>
-        <button onClick={() => handleComment(post.id)}>Comment</button>
+        <button onClick={() => console.log('Open comment modal for Post ID:', post.id)}>Comment</button>
         <button onClick={() => handleRepost(post.id, userId)}>Repost ({post.reposts.length})</button>
-        <button onClick={() => alert('Share this post')}>Share</button>
+        <button onClick={handleShare}>Share</button>
       </div>
     </div>
   );
-}
+};
+
 export default Post;
