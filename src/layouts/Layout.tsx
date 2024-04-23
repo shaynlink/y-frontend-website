@@ -6,12 +6,12 @@ export default function Layout() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate()
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('user', user)
     if (!user) {
       navigate('/Login');
     }
-  }, [user])
+  }, [user])*/
   
     return (
       <Outlet />

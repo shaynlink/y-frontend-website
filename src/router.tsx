@@ -6,6 +6,7 @@ import Feed from "./pages/Feed";
 import PostPage from './pages/PostPage';
 import Profil from "./pages/Profil";
 import Settings from "./pages/Settings";
+import SignIn from "./pages/SignIn";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       path: '/login',
       element: <Login />
     },   
+    {
+      path: '/SignIn',
+      element: <SignIn/>
+    },
     {
       path: '*',
       element: <div>404</div>
