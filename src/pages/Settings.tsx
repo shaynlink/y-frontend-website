@@ -12,7 +12,7 @@ const Settings = () => {
     });
 
     useEffect(() => {
-        // Charger les données utilisateur existantes
+        
         setFormData({
             username: 'Omer82',
             picture: null,
