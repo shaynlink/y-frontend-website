@@ -43,6 +43,10 @@ export async function getFollowingPosts() {
   // axios.get('/posts/following')
   return await fakeAxiosPost('post', () => true) || [];
 }
+export async function getCustomFeedPosts(userIds: string[]) {
+  // axios.get(`/posts?userIds=${userIds.join(',')}`)
+  return await fakeAxiosPost('post', (post) => userIds.includes(post.userId)) || [];
+}
 
 export async function getPost(id: string ) {
   // axios.get(`/posts/${id}`)
