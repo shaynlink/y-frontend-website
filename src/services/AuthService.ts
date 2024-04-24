@@ -21,6 +21,15 @@ export async function loginFn(email: string, password: string) {
   // axios.post('/auth/login', { body: { email, password }}) 
   return await fakeAxios('users', (user) => user.email === email && user.password === password);
 }
+export async function SignInFn(email: string, password: string, name: string) {
+
+  return await fakeAxios('users', (user) => user.email === email && user.password === password && user.name === name);
+}
+
+export async function checkUserExists(value: string, type: string) {
+  // axios.get(`/users?${type}=${value}`)
+  return await fakeAxios('users', (user) => user[type] === value);
+}
 export async function getUserData(userId: string) {
   // axios.get(`/users/${userId}`)
   return await fakeAxios('users', (user) => user.id === userId);

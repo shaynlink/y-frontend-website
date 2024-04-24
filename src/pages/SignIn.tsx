@@ -1,72 +1,131 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UsersContext';
-import { loginFn } from '../services/AuthService';
+import { SignInFn, checkUserExists } from '../services/AuthService';
+
+interface SignInProps {
+  email: string;
+  password: string;
+  username: string;
+  emailError: string;
+  passwordError: string;
+  usernameError: string;
+  isLoading: boolean;
+}
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [values, setValues] = useState<SignInProps>({
+    email: '',
+    password: '',
+    username: '',
+    emailError: '',
+    passwordError: '',
+    usernameError: '',
+    isLoading: false
+  });
 
-  const onButtonClick = () => {
-    setEmailError('');
-    setPasswordError('');
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
-    if ('' === email) {
-      setEmailError('Please enter your email');
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      setEmailError('Please enter a valid email');
-    } else if ('' === password) {
-      setPasswordError('Please enter a password');
-    } else if (password.length < 7) {
-      setPasswordError('The password must be 8 characters or longer');
+  const validateInput = async () => {
+    let errors = { emailError: '', passwordError: '', usernameError: '' };
+    if (!values.email) {
+      errors.emailError = 'Please enter your email';
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)) {
+      errors.emailError = 'Please enter a valid email';
     } else {
-      loginFn(email, password)
-        .then((user) => {
+      const emailExists = await checkUserExists(values.email, 'email');
+      if (emailExists) {
+        errors.emailError = 'Email is already taken';
+      }
+    }
+
+    if (!values.username) {
+      errors.usernameError = 'Please enter a username';
+    } else {
+      const usernameExists = await checkUserExists(values.username, 'username');
+      if (usernameExists) {
+        errors.usernameError = 'Username is already taken';
+      }
+    }
+
+    if (!values.password) {
+      errors.passwordError = 'Please enter a password';
+    } else if (values.password.length < 7) {
+      errors.passwordError = 'The password must be 8 characters or longer';
+    }
+    return errors;
+  };
+
+  const onButtonClick = async () => {
+    const errors = await validateInput();
+    setValues({ ...values, ...errors, isLoading: true });
+
+    if (!errors.emailError && !errors.passwordError && !errors.usernameError) {
+      SignInFn(values.email, values.password, values.username)
+        .then(user => {
           if (user) {
             setUser(user);
             navigate('/');
           } else {
-            setPasswordError('Invalid credentials');
+            setValues({ ...values, passwordError: 'Invalid credentials', isLoading: false });
           }
-        }).catch(error => {
+        })
+        .catch(error => {
           console.error('Login failed:', error);
-          setPasswordError('Login failed. Please try again.');
+          setValues({ ...values, passwordError: 'Login failed. Please try again.', isLoading: false });
         });
+    } else {
+      setValues({ ...values, isLoading: false });
     }
   };
 
   return (
-    <div className={'mainContainer'}>
-      <div className={'titleContainer'}>
+    <div className="mainContainer">
+      <div className="titleContainer">
         <div>Sign In</div>
       </div>
       <br />
-      <div className={'inputContainer'}>
+      <div className="inputContainer">
         <input
-          value={email}
+          value={values.email}
+          name="email"
           placeholder="Enter your email here"
-          onChange={(e) => setEmail(e.target.value)}
-          className={'inputBox'}
+          onChange={handleInputChange}
+          className="inputBox"
         />
-        <label className="errorLabel">{emailError}</label>
+        <label className="errorLabel">{values.emailError}</label>
       </div>
       <br />
-      <div className={'inputContainer'}>
+      <div className="inputContainer">
         <input
-          value={password}
-          placeholder="Enter your password here"
-          onChange={(e) => setPassword(e.target.value)}
-          className={'inputBox'}
+          value={values.username}
+          name="username"
+          placeholder="Choose a username"
+          onChange={handleInputChange}
+          className="inputBox"
         />
-        <label className="errorLabel">{passwordError}</label>
+        <label className="errorLabel">{values.usernameError}</label>
       </div>
       <br />
-      <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Sign In'} />
+      <div className="inputContainer">
+        <input
+          value={values.password}
+          name="password"
+          placeholder="Enter your password here"
+          onChange={handleInputChange}
+          className="inputBox"
+        />
+        <label className="errorLabel">{values.passwordError}</label>
+      </div>
+      <br />
+      <div className="inputContainer">
+        <button disabled={values.isLoading} className="inputButton" onClick={onButtonClick}>
+          {values.isLoading ? 'Loading...' : 'Sign In'}
+        </button>
       </div>
     </div>
   );
