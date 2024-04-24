@@ -5,6 +5,7 @@ interface PostProps {
   currentPost: PostType;
 }
 
+
 const Post: React.FC<PostProps> = ({ currentPost }) => {
   const [post, setPosts] = useState<PostType>(currentPost);
   const userId = "currentUserId";

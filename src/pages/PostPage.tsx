@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Post as PostType } from '../type';
 import Post from '../components/Post';
 import { getPost } from '../services/AuthService';
+import Comments from '../components/Comment';
 
 const PostPage = () => {
   const [post, setPost] = useState<PostType | null>(null);
@@ -21,6 +22,7 @@ const PostPage = () => {
   return (
     <div>
       {post ? <Post currentPost={post} /> : <p>Post not found.</p>}
+      <Comments postId={id} />
     </div>
   );
 };
