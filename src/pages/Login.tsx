@@ -17,7 +17,7 @@ const Login = () => {
   
     if ('' === email) {
       setEmailError('Please enter your email')
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+    } else if (!/^[a-z-.]+@([a-z-]+\.)+[a-z-]{2,4}$/.test(email)) {
       setEmailError('Please enter a valid email')
     } else if ('' === password) {
       setPasswordError('Please enter a password')

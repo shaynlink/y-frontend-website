@@ -34,7 +34,7 @@ const SignIn = () => {
     let errors = { emailError: '', passwordError: '', usernameError: '' };
     if (!values.email) {
       errors.emailError = 'Please enter your email';
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(values.email)) {
+    } else if (!/^[a-z-.]+@([a-z-]+\.)+[a-z-]{2,4}$/.test(values.email)) {
       errors.emailError = 'Please enter a valid email';
     } else {
       const emailExists = await checkUserExists(values.email, 'email');
