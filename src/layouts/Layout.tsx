@@ -1,17 +1,15 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../contexts/UsersContext";
+import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom'
 
 export default function Layout() {
-  const { user } = useContext(UserContext);
   const navigate = useNavigate()
 
-  /*useEffect(() => {
-    console.log('user', user)
-    if (!user) {
+  useEffect(() => {
+    const localToken = window.localStorage.getItem('token');
+    if (!localToken) {
       navigate('/Login');
     }
-  }, [user])*/
+  }, [])
   
     return (
       <Outlet />

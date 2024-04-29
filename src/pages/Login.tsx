@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../contexts/UsersContext'
-import { loginFn } from '../services/AuthService'
+import { login } from '../services/AuthService'
 
-const Login = () => {
+export default function Login() {
   const navigate = useNavigate()
-  const { setUser } = useContext(UserContext)
+  const { setToken } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
@@ -17,22 +17,41 @@ const Login = () => {
   
     if ('' === email) {
       setEmailError('Please enter your email')
-    } else if (!/^[a-z-.]+@([a-z-]+\.)+[a-z-]{2,4}$/.test(email)) {
+    } else if (!/^[a-z-.0-9]+@([a-z-0-9]+\.)+[a-z-]{2,4}$/.test(email)) {
       setEmailError('Please enter a valid email')
     } else if ('' === password) {
       setPasswordError('Please enter a password')
     } else if (password.length < 7) {
       setPasswordError('The password must be 8 characters or longer')
     } else {
-      loginFn(email, password)
-        .then((user) => {
-          if (user) {
-            setUser?.(user)
+      login(email, password)
+        .then((response) => {
+          if (response.data.result?.token) {
+            window.localStorage.setItem('token', response.data.result.token);
+            setToken?.(response.data.result.token);
             navigate('/')
           } else {
             setEmailError('Invalid credentials')
           }
+          console.log('user:', response.data);
         })
+        .catch((error) => {
+          if (
+            error.response.status === 401 &&
+            error.response.data?.error?.name === 'ErrorResponse'
+          ) {
+            setEmailError('Invalid credentials')
+          }
+        })
+      // loginFn(email, password)
+      //   .then((user) => {
+      //     if (user) {
+      //       setUser?.(user)
+      //       navigate('/')
+      //     } else {
+      //       setEmailError('Invalid credentials')
+      //     }
+      //   })
     }
   }
 
@@ -68,5 +87,3 @@ const Login = () => {
     </div>
   )
 }
-
-export default Login
