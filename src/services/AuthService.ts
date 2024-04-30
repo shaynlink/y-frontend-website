@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import type { UserMe, BaseUser } from 'y-types/users'
+import mockup from '../../mockup.json';
+import mockuppost from '../../mockuppost.json';
 
 /**
  * Endpoint URLs

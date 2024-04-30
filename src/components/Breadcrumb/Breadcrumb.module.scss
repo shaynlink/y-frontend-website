@@ -1,0 +1,38 @@
+.breadcrumb {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid #333;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  scrollbar-color: var(--app-color) #333;
+
+  .item {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    text-wrap: nowrap;
+    height: 100%;
+    padding: .5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    font-size: medium;
+    font-weight: bold;
+
+    .outline {
+      background-color: var(--app-color);
+      width: 70%;
+      max-width: 8rem;
+      height: 4px;
+      border-radius: 2px;
+    }
+  }
+
+  .separator {
+    background-color: #333;
+    width: 4px;
+  }
+}

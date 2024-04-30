@@ -1,0 +1,37 @@
+.navbar {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+
+  .containerBreadcrumb {
+    overflow-x: hidden;
+  }
+
+  .containerAddFeed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid #333;
+
+    .btnAddFeed {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transform: rotate(0deg);
+      transition: transform 0.3s;
+      width: 30px;
+      height: 30px;
+    
+      &:hover {
+        transform: rotate(90deg);
+      }
+    
+      svg {
+        width: 30px;
+        height: 30px;
+        path {
+          stroke: var(--app-color);
+        }
+      }
+    }
+  }
+}

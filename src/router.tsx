@@ -1,7 +1,7 @@
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import Layout from "./layouts/Layout";
 import { createBrowserRouter } from "react-router-dom";
-import Feed from "./pages/Feed";
+import Feed from "./pages/Feed/Feed";
 import PostPage from './pages/PostPage';
 import Profil from "./pages/Profil";
 import Settings from "./pages/Settings";
