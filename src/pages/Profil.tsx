@@ -1,38 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom'; 
-import { getUserData } from '../services/AuthService';
+import { useEffect, useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { getMe, getUser } from '../services/AuthService';
+import { BaseUser } from 'y-types/users';
 
+import defaultProfile from '../assets/chad_default.png';
 
-const Profil = () => {
+/**
+ * Profil page react component.
+ * @returns {JSX.Element}
+ */
+export default function Profil() {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-    //const { userId } = useParams();
-    const userId = "e0a43746-8faf-481a-becd-4c305642fd17";
-    const [user, setUser] = useState<null | any>();
-    const [posts, setPosts] = useState<null | any>([]);
+  const [user, setUser] = useState<BaseUser & { followers: number, following: number } | null>();
+  // const [posts, setPosts] = useState<null | any>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const userData = await getUserData(userId);
-            setUser(userData);
-            //setPosts("983db02a-f8bc-470c-a81f-35d0ab2fad54");
-            setPosts(userData.posts);
-        };
-        fetchUserData();
-    }, [userId]);
+  // Is current user is me
+  const isMe = id === 'me';
 
+  useEffect(() => {
+    // Fetch user data
+    const fetchUserData = async () => {
+      console.log('Is me ?', isMe);
+      // Get method to call based on the user
+      const funcGetUser = isMe ? getMe() : getUser(id as string);
+
+      await funcGetUser
+        .then((response) => {
+          // If there is an error, return
+          if (response.data.error) {
+            return;
+          } else {
+            // Set user data
+            setUser(response.data.result as BaseUser & { followers: number, following: number });
+          }
+        })
+        .finally(() => {
+          // When request is done, set loading to false
+          setIsLoading(false);
+        })
+    };
+
+    fetchUserData();
+  }, []);
+
+  // If request is loading
+  if (isLoading) {
     return (
-        <div>
-            <img src={user?.avatar} alt={`${user?.name}'s avatar`} />
-            <h1>{user?.name}</h1>
-            <div>
-                <Link to={`/users/${userId}/followers`}>Followers: {user?.followers.length}</Link>
-                <Link to={`/users/${userId}/following`}>Following: {user?.following.length}</Link>
-            </div>
-            <button onClick={() => {navigate(`/Profile/${userId}/Settings`)}}>
-                Settings
-            </button>
-        </div>
-    );
-};
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    )
+  }
 
-export default Profil;
+  // If user is not found
+  if (!user) {
+    return (
+      <div>
+        <h1>User not found 😶‍🌫️</h1>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {
+        user.picture ?
+          <img src={user.picture} alt={`${user.username}'s avatar`} /> :
+          <img src={defaultProfile} alt={`Default avatar`} />
+      }
+      <h1>{user.username}</h1>
+      <div>
+        <Link to={`/users/${id}/followers`}>Followers: {user.followers}</Link>
+        <Link to={`/users/${id}/following`}>Following: {user.following}</Link>
+      </div>
+      <button onClick={() => { navigate(`/Profile/${id}/Settings`) }}>
+        Settings
+      </button>
+    </div>
+  );
+}
