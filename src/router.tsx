@@ -5,7 +5,7 @@ import Feed from "./pages/Feed/Feed";
 import PostPage from './pages/PostPage';
 import Profil from "./pages/Profil";
 import Settings from "./pages/Settings";
-import SignIn from "./pages/SignIn";
+import SignIn from "./pages/Signin/SignIn";
 
 const router = createBrowserRouter([
     {

@@ -12,6 +12,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+
   const onButtonClick = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     
@@ -80,6 +81,11 @@ export default function Login() {
           {!isLoading && (
             <button className={styles.btn} type="submit">
               Log In
+            </button>
+          )}
+          {!isLoading && (
+            <button className={styles.btn} onClick={() => navigate('/SignIn')}>
+              Sign In
             </button>
           )}
 

@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../contexts/UsersContext';
-import { SignInFn, checkUserExists } from '../services/AuthService';
+import { UserContext } from '../../contexts/UsersContext';
+import { SignInFn, checkUserExists } from '../../services/AuthService';
+import styles from '../Login/Login.module.scss';
 
 interface SignInProps {
   email: string;
@@ -84,48 +85,57 @@ const SignIn = () => {
   };
 
   return (
-    <div className="mainContainer">
-      <div className="titleContainer">
-        <div>Sign In</div>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={values.email}
-          name="email"
-          placeholder="Enter your email here"
-          onChange={handleInputChange}
-          className="inputBox"
-        />
-        <label className="errorLabel">{values.emailError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={values.username}
-          name="username"
-          placeholder="Choose a username"
-          onChange={handleInputChange}
-          className="inputBox"
-        />
-        <label className="errorLabel">{values.usernameError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={values.password}
-          name="password"
-          placeholder="Enter your password here"
-          onChange={handleInputChange}
-          className="inputBox"
-        />
-        <label className="errorLabel">{values.passwordError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <button disabled={values.isLoading} className="inputButton" onClick={onButtonClick}>
-          {values.isLoading ? 'Loading...' : 'Sign In'}
-        </button>
+    <div className={styles.container}>
+      <div className={styles.hero}>
+        <h1 className={styles.title}>   Welcome <span className={styles.waveLoop}>👋   </span></h1>
+          <form className={styles.form}>
+          <h3 className={styles.error}>{}</h3>
+          <label htmlFor="email" className={styles.label}>Enter your email</label>
+          <input
+            type="email"
+            name="email"
+            value={values.email}
+            placeholder="Enter your email here"
+            onChange={() => handleInputChange}
+            className={styles.input}
+          />
+          <label htmlFor="username" className={styles.label}>Choose a username</label>
+          <input
+            type="text"
+            name="username"
+            value={values.username}
+            placeholder="Choose a username"
+            onChange={() => handleInputChange}
+            className={styles.input}
+          />
+          <label htmlFor="password" className={styles.label}>Enter your password</label>
+          <input
+            type="password"
+            name="password"
+            value={values.password}
+            placeholder="Enter your password here"
+            onChange={() => handleInputChange}
+            className={styles.input}
+          />
+
+          {!values.isLoading && (
+            <button className={styles.btn} disabled={values.isLoading} onClick={onButtonClick}>
+              Sign In
+            </button>
+          )}
+
+          {!values.isLoading && (
+            <button className={styles.btn} onClick={() => navigate('/Login')}>
+              Log In
+            </button>
+          )}
+
+          {values.isLoading && (
+            <div className={styles.loading}>
+              <span className={styles.spinner} />
+            </div>
+          )}
+          </form>
       </div>
     </div>
   );
