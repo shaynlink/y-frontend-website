@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Post from '../../components/Post';
-import CreatePost from '../../components/CreatePost';
+import CreatePost from '../../components/CreatePost/CreatePost';
 import CreateCustomFeedModal from '../../components/CreateCustomFeedModal'; 
 import { getPosts, getFollowingPosts, getCustomFeedPosts } from '../../services/AuthService';
 import { Post as PostType } from '../../type';
