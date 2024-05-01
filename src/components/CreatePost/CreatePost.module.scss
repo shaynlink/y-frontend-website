@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 2rem;
+
+  .userInfo {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    .picture {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  }
+
+  .subContainer {
+    width: 100%;
+
+    .textarea {
+      width: 100%;
+      height: 50px;
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 1.2rem;
+      background-color: #000000;
+      border: none;
+      user-select: none;
+      color: white;
+      resize: none;
+      
+      &:hover, &:focus, &:active {
+        user-select: none;
+        outline-width: 0;
+      }
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+ 
+    svg {
+      fill: var(--app-color);
+      cursor: pointer;
+    }
+
+    .iconPicture {
+      width: 24px;
+      height: 24px;
+    }
+
+    .submitButton {
+      background-color: var(--app-color);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding:  0.5rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+}
