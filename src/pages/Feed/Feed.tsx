@@ -80,6 +80,7 @@ function Feed() {
         </div>
       </div>
       <CreatePost onPostSubmit={handlePostSubmit} />
+      <div className={styles.separator}></div>
       {posts.map((post) => (
         <Post key={post.id} currentPost={post} />
       ))}

@@ -45,25 +45,10 @@ const CreatePost = ({ onPostSubmit }) => {
           </svg>
         </div>
       </div>
+      <div className={styles.separator}></div>
     </div>
   )
 
-  return (
-    <form onSubmit={handleSubmit} style={{ margin: '20px', textAlign: 'center' }}>
-      <textarea
-        value={content}
-        onChange={handleContentChange}
-        placeholder="What's happening?"
-        style={{ width: '100%', height: '100px' }}
-      />
-      <input
-        type="file"
-        onChange={handleImageChange}
-        style={{ display: 'block', margin: '10px auto' }}
-      />
-      <button type="submit" disabled={!content}>Post</button>
-    </form>
-  );
 };
 
 export default CreatePost;
