@@ -1,0 +1,70 @@
+.editprofileform {
+ 
+
+  .formlabel {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    color: #fff;
+  }
+
+  .forminput {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #8f8f8f;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    background-color: #000;
+    color: #717171;
+
+    &:focus {
+      border-color: #1da1f2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(29,161,242,0.2);
+    }
+  }
+
+  .formpicture{
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    background-color: #000;
+    color: #717171;
+
+    &:focus {
+      border-color: #1da1f2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(29,161,242,0.2);
+    }
+    &::-webkit-file-upload-button {
+      font-size: 16px;
+      padding: 8px 12px;
+    border: 1px solid #ccd6dd;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    background-color: #000;
+    color: #fff;
+    }
+
+  }
+  
+
+  .formbutton {
+    background-color: #000;
+    color: white;
+    border: 1px solid #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-top: 15px;
+
+    &:hover {
+      background-color: #1e1e1e;
+    }
+  }
+}

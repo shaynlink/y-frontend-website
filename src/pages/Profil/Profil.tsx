@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getMe, getUser } from '../services/AuthService';
+import { getMe, getUser } from '../../services/AuthService';
 import { BaseUser } from 'y-types/users';
+import Style from './Profil.module.scss';
 
-import defaultProfile from '../assets/chad_default.png';
+import defaultProfile from '../../assets/chad_default.png';
 
 /**
  * Profil page react component.
@@ -64,20 +65,24 @@ export default function Profil() {
   }
 
   return (
-    <div>
+    <div className={Style.profilecontainer}>
+      <div className={Style.profileavatar}>
       {
         user.picture ?
           <img src={user.picture} alt={`${user.username}'s avatar`} /> :
           <img src={defaultProfile} alt={`Default avatar`} />
       }
-      <h1>{user.username}</h1>
-      <div>
-        <Link to={`/users/${id}/followers`}>Followers: {user.followers}</Link>
-        <Link to={`/users/${id}/following`}>Following: {user.following}</Link>
-      </div>
-      <button onClick={() => { navigate(`/Profile/${id}/Settings`) }}>
-        Settings
+      <button onClick={() => navigate(`/Profile/${id}/Settings`)} className={Style.profileeditbutton}>
+        Edit profile
       </button>
+      </div>
+      <h1 className={Style.profileusername}>{user.username}</h1>
+      <div className={Style.profilelinks}>
+        <Link to={`/users/${id}/followers`}>{user.followers} Followers </Link>
+        <Link to={`/users/${id}/following`}>{user.following} Following </Link>
+      </div>
+      
     </div>
   );
+  
 }
