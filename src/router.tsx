@@ -3,8 +3,8 @@ import Layout from "./layouts/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Feed from "./pages/Feed/Feed";
 import PostPage from './pages/PostPage';
-import Profil from "./pages/Profil";
-import Settings from "./pages/Settings";
+import Profil from "./pages/Profil/Profil";
+import Settings from "./pages/Settings/Settings";
 import SignIn from "./pages/Signin/SignIn";
 
 const router = createBrowserRouter([
