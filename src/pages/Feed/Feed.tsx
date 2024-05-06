@@ -6,6 +6,7 @@ import { getPosts, getFollowingPosts, getCustomFeedPosts } from '../../services/
 import { Post as PostType } from '../../type';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import styles from './Feed.module.scss'
+import ClickableLayer from '../../components/ClickableLayer/ClickableLayer';
 // TODO ajouter un nom au nouveu feed et le faire apparaitre dans le menu
 function Feed() {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -88,6 +89,9 @@ function Feed() {
         onClose={() => setModalOpen(false)}
         onCreateFeed={handleCreateFeed}
       />
+      <ClickableLayer>
+        Hello
+      </ClickableLayer>
     </div>
   );
 }
