@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Post as PostType } from '../type';
-import Post from '../components/Post';
-import { getPost } from '../services/AuthService';
+import Post from '../components/Post/Post';
+// import { getPost } from '../services/AuthService';
 import Comments from '../components/Comment';
 
 const PostPage = () => {

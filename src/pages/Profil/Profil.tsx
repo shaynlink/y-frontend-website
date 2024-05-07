@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getMe, getUser } from '../../services/AuthService';
 import { BaseUser } from 'y-types/users';
+import Post from '../../components/Post/Post';
+
 import Style from './Profil.module.scss';
 
 import defaultProfile from '../../assets/chad_default.png';
@@ -14,7 +16,7 @@ export default function Profil() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<BaseUser & { followers: number, following: number } | null>();
-  // const [posts, setPosts] = useState<null | any>([]);
+  const [posts, setPosts] = useState<null | any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Is current user is me
@@ -43,14 +45,21 @@ export default function Profil() {
         })
     };
 
+    const fetchPosts = async () => {
+      await getUser(id as string)
+        .then((response) => {
+          setPosts(response.data.result.posts);
+        })
+    }
+
     fetchUserData();
   }, []);
 
   // If request is loading
   if (isLoading) {
     return (
-      <div>
-        <h1>Loading...</h1>
+      <div className="loading">
+        <span className="spinner" />
       </div>
     )
   }
@@ -64,15 +73,15 @@ export default function Profil() {
     )
   }
 
+  const picture = !user.picture
+    ? defaultProfile
+    : `https://storage.googleapis.com/y-bucket-cdn/${user._id}/${user.picture}`;
+
   return (
     <div className={Style.profilecontainer}>
       <div className={Style.profileavatar}>
-      {
-        user.picture ?
-          <img src={user.picture} alt={`${user.username}'s avatar`} /> :
-          <img src={defaultProfile} alt={`Default avatar`} />
-      }
-      <button onClick={() => navigate(`/Profile/${id}/Settings`)} className={Style.profileeditbutton}>
+      <img src={picture} alt={`${user.username}'s avatar`} />
+      <button onClick={() => navigate(`/profile/${id}/settings`)} className={Style.profileeditbutton}>
         Edit profile
       </button>
       </div>
@@ -81,7 +90,9 @@ export default function Profil() {
         <Link to={`/users/${id}/followers`}>{user.followers} Followers </Link>
         <Link to={`/users/${id}/following`}>{user.following} Following </Link>
       </div>
-      
+      {posts.map((post: any) => (
+        <Post currentPost={post} />
+      ))}
     </div>
   );
   

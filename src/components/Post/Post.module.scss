@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    cursor: pointer;
 
     .avatar {
       width: 40px;
@@ -28,6 +29,32 @@
     color: #FFF;
     margin-top: 5px;
     
+  }
+
+  .images {
+    display: grid;
+    width: min-content;
+    padding-bottom: 1rem;
+    gap: 5px;
+    
+    img {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  .noImage {
+    grid-template-columns: 0fr;
+    grid-template-rows: 0fr;
+  }
+
+  .minImage {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .maxImage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
 
   span {

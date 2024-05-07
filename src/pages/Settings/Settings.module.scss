@@ -1,6 +1,4 @@
 .editprofileform {
- 
-
   .formlabel {
     display: block;
     font-weight: bold;
@@ -17,7 +15,7 @@
     border-radius: 4px;
     box-sizing: border-box; 
     background-color: #000;
-    color: #717171;
+    color: #d5d5d5;
 
     &:focus {
       border-color: #1da1f2;
@@ -50,7 +48,6 @@
     }
 
   }
-  
 
   .formbutton {
     background-color: #000;
@@ -61,10 +58,13 @@
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s;
-    margin-top: 15px;
 
     &:hover {
       background-color: #1e1e1e;
     }
+  }
+
+  .lastForm {
+    margin-bottom: 1rem;
   }
 }

@@ -1,29 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import type { UserMe, BaseUser } from 'y-types/users'
-import mockup from '../../mockup.json';
-import mockuppost from '../../mockuppost.json';
 
 /**
  * Endpoint URLs
  */
 const ENDPOINTS = {
   authentification: 'https://y-authentification-service-2fqcvdzp6q-ew.a.run.app',
-  users: 'https://y-users-service-2fqcvdzp6q-uc.a.run.app'
-}
-
-async function fakeAxios(key: string, predicate: any) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve((mockup as Record<string, any[]>)[key].find(predicate));
-    }, 2000);
-  });
-}
-async function fakeAxiosPost(key: string, predicate: any) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve((mockuppost as Record<string, any[]>)[key].filter(predicate));
-    }, 2000);
-  });
+  users:            'http://localhost:3000' ?? 'https://y-users-service-2fqcvdzp6q-uc.a.run.app',
+  posts:            'https://y-posts-service-2fqcvdzp6q-ew.a.run.app'
 }
 
 /**
@@ -45,7 +29,16 @@ interface Response<T> {
  * @returns {Promise<AxiosResponse<Response<T>, any>>}
  */
 export async function makeRequest<T, D>(config: AxiosRequestConfig<D>) {
-  return axios.request<Response<T>>(config);
+  return axios
+    .request<Response<T>>(config)
+    .catch(async (error): Promise<any> => {
+      if (error.response.status === 429) {
+        console.log('Too many requests');
+        await new Promise((res) => setTimeout(res, 8000));
+        return makeAuthentifiedRequest(config);
+      }
+      throw error;
+    });
 }
 
 /**
@@ -66,7 +59,15 @@ export async function makeAuthentifiedRequest<T, D>(
       Authorization: `Bearer ${localToken}`,
       ...config?.headers ?? {},
     }
-  });
+  })
+    .catch(async (error): Promise<any> => {
+      if (error.response.status === 429) {
+        console.log('Too many requests');
+        await new Promise((res) => setTimeout(res, 8000));
+        return makeAuthentifiedRequest(config);
+      }
+      throw error;
+    });
 }
 
 /**
@@ -115,30 +116,88 @@ export async function getUser(userId: string) {
   })
 }
 
-export async function SignInFn(email: string, password: string, name: string) {
-
-  return await fakeAxios('users', (user) => user.email === email && user.password === password && user.name === name);
+export async function getFeeds() {
+  return makeAuthentifiedRequest<undefined, {_id: string; name: string; fromIds: string}[]>({
+    method: 'GET',
+    url: `${ENDPOINTS.posts}/feed`
+  })
 }
 
-export async function checkUserExists(value: string, type: string) {
-  // axios.get(`/users?${type}=${value}`)
-  return await fakeAxios('users', (user) => user[type] === value);
+export async function getPosts(feedType: string, page: number, limit: number) {
+  return makeAuthentifiedRequest({
+    method: 'GET',
+    url: `${ENDPOINTS.posts}/feed`,
+    params: {
+      id: feedType,
+      page,
+      limit
+    }
+  })
 }
 
-export async function getPosts() {
-  // axios.get('/posts')
-  return await fakeAxiosPost('post', () => true) || [];
-}
-export async function getFollowingPosts() {
-  // axios.get('/posts/following')
-  return await fakeAxiosPost('post', () => true) || [];
-}
-export async function getCustomFeedPosts(userIds: string[]) {
-  // axios.get(`/posts?userIds=${userIds.join(',')}`)
-  return await fakeAxiosPost('post', (post) => userIds.includes(post.userId)) || [];
+export async function createPost(text: string, files: File[]) {
+  const formData = new FormData();
+  formData.append('content', text);
+  files.forEach((file) => {
+    formData.append('images', file);
+  })
+
+  return makeAuthentifiedRequest({
+    method: 'POST',
+    url: `${ENDPOINTS.posts}/`,
+    data: formData
+  })
 }
 
-export async function getPost(id: string ) {
-  // axios.get(`/posts/${id}`)
-  return await fakeAxiosPost('post', (post) => post.id === id);
+export async function getFollowers(page: number, limit: number) {
+  return makeAuthentifiedRequest({
+    method: 'GET',
+    url: `${ENDPOINTS.users}/me/following`,
+    params: {
+      page,
+      limit
+    }
+  })
+}
+
+export async function updateProfile(data: { username: string | undefined; email: string | undefined}) {
+  return makeAuthentifiedRequest({
+    method: 'POST',
+    url: `${ENDPOINTS.users}/me`,
+    data
+  })
+}
+
+export async function updatePicture(picture: File) {
+  const formData = new FormData();
+  formData.append('file', picture);
+
+  return makeAuthentifiedRequest({
+    method: 'POST',
+    url: `${ENDPOINTS.users}/me/picture`,
+    data: formData
+  })
+}
+
+export async function signUp(username: string, email: string, password: string) {
+  return makeRequest({
+    method: 'POST',
+    url: `${ENDPOINTS.authentification}/register`,
+    data: {
+      username,
+      email,
+      password
+    }
+  })
+}
+
+export async function createList(name: string, userIds: string[]) {
+  return makeAuthentifiedRequest({
+    method: 'POST',
+    url: `${ENDPOINTS.users}/feed`,
+    data: {
+      userIds,
+      name
+    }
+  })  
 }

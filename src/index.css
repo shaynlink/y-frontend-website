@@ -62,3 +62,26 @@ h1 {
     color: #747bff;
   }
 }
+
+.loading {
+  display: flex;
+  gap: 1rem;
+}
+
+.loading > .spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--app-color);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}

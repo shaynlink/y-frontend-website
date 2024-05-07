@@ -10,6 +10,9 @@
     grid-row: 1;
     grid-column: 1;
     border-right: 2px solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .branding {
       display: flex;
@@ -28,6 +31,7 @@
       color: white;
       font-size: 1.5rem;
       text-align: center;
+      height: 100%;
 
       .btnLink {
         background-color: transparent;
@@ -49,6 +53,33 @@
         }
       }
     }
+
+    .account {
+      padding: 1rem;
+
+      .badge {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: .7rem;
+        border-radius: 20px;
+        border: 2px solid #1e1e1e;
+        color: white;
+        cursor: pointer;
+
+        .self {
+          display: flex;
+          gap: .8rem;
+          align-items: center;
+          .icon {
+            width: 30px;
+            height: 30px;
+            fill: white;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
   }
 
   .subContainer {
@@ -59,5 +90,6 @@
     gap: 1rem;
     padding: 1rem;
     overflow: scroll;
+    overflow-x: hidden;
   }
 }

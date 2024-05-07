@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UsersContext';
-import { SignInFn, checkUserExists } from '../../services/AuthService';
+import { signUp } from '../../services/AuthService';
 import styles from '../Login/Login.module.scss';
 
 interface SignInProps {
@@ -16,7 +16,7 @@ interface SignInProps {
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setToken } = useContext(UserContext);
   const [values, setValues] = useState<SignInProps>({
     email: '',
     password: '',
@@ -32,25 +32,15 @@ const SignIn = () => {
   };
 
   const validateInput = async () => {
-    let errors = { emailError: '', passwordError: '', usernameError: '' };
+    const errors = { emailError: '', passwordError: '', usernameError: '' };
     if (!values.email) {
       errors.emailError = 'Please enter your email';
     } else if (!/^[a-z-.]+@([a-z-]+\.)+[a-z-]{2,4}$/.test(values.email)) {
       errors.emailError = 'Please enter a valid email';
-    } else {
-      const emailExists = await checkUserExists(values.email, 'email');
-      if (emailExists) {
-        errors.emailError = 'Email is already taken';
-      }
     }
 
     if (!values.username) {
       errors.usernameError = 'Please enter a username';
-    } else {
-      const usernameExists = await checkUserExists(values.username, 'username');
-      if (usernameExists) {
-        errors.usernameError = 'Username is already taken';
-      }
     }
 
     if (!values.password) {
@@ -66,18 +56,30 @@ const SignIn = () => {
     setValues({ ...values, ...errors, isLoading: true });
 
     if (!errors.emailError && !errors.passwordError && !errors.usernameError) {
-      SignInFn(values.email, values.password, values.username)
-        .then(user => {
-          if (user) {
-            setUser(user);
+      signUp(
+        values.username,
+        values.email,
+        values.password
+      )
+        .then((response) => {
+          if (response?.data?.error) {
+            setValues({ ...values, emailError: 'Cannot create user', isLoading: false });
+            return;
+          }
+
+          if (response?.data?.result) {
+            setToken?.(response.data.result.token);
+            window.localStorage.setItem('token', response.data.result.token);
             navigate('/');
-          } else {
-            setValues({ ...values, passwordError: 'Invalid credentials', isLoading: false });
           }
         })
         .catch(error => {
           console.error('Login failed:', error);
-          setValues({ ...values, passwordError: 'Login failed. Please try again.', isLoading: false });
+          if (error?.response?.data?.error) {
+            if (error.response.data.error.extra?.code == 11000) {
+              setValues({ ...values, emailError: error.response.data.error?.message, isLoading: false });
+            }
+          }
         });
     } else {
       setValues({ ...values, isLoading: false });
@@ -87,7 +89,7 @@ const SignIn = () => {
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
-        <h1 className={styles.title}>   Welcome <span className={styles.waveLoop}>👋   </span></h1>
+        <h1 className={styles.title}>Welcome buddy <span className={styles.waveLoop}>👋</span></h1>
           <form className={styles.form}>
           <h3 className={styles.error}>{}</h3>
           <label htmlFor="email" className={styles.label}>Enter your email</label>
@@ -96,7 +98,7 @@ const SignIn = () => {
             name="email"
             value={values.email}
             placeholder="Enter your email here"
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
             className={styles.input}
           />
           <label htmlFor="username" className={styles.label}>Choose a username</label>
@@ -105,7 +107,7 @@ const SignIn = () => {
             name="username"
             value={values.username}
             placeholder="Choose a username"
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
             className={styles.input}
           />
           <label htmlFor="password" className={styles.label}>Enter your password</label>
@@ -114,7 +116,7 @@ const SignIn = () => {
             name="password"
             value={values.password}
             placeholder="Enter your password here"
-            onChange={() => handleInputChange}
+            onChange={handleInputChange}
             className={styles.input}
           />
 
@@ -131,8 +133,8 @@ const SignIn = () => {
           )}
 
           {values.isLoading && (
-            <div className={styles.loading}>
-              <span className={styles.spinner} />
+            <div className="loading">
+              <span className="spinner" />
             </div>
           )}
           </form>

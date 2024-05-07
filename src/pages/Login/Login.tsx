@@ -90,8 +90,8 @@ export default function Login() {
           )}
 
           {isLoading && (
-            <div className={styles.loading}>
-              <span className={styles.spinner} />
+            <div className="loading">
+              <span className="spinner" />
             </div>
           )}
         </form>

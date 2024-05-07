@@ -67,20 +67,6 @@
         }
       }
     }
-
-    .loading {
-      display: flex;
-      gap: 1rem;
-      
-      .spinner {
-        width: 1rem;
-        height: 1rem;
-        border: 2px solid var(--app-color);
-        border-top: 2px solid transparent;
-        border-radius: 50%;
-        animation: spin 0.5s linear infinite;
-      }
-    }
   }
   
 }
