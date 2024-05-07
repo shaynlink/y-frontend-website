@@ -6,7 +6,7 @@ import type { UserMe, BaseUser } from 'y-types/users'
  */
 const ENDPOINTS = {
   authentification: 'https://y-authentification-service-2fqcvdzp6q-ew.a.run.app',
-  users:            'http://localhost:3000' ?? 'https://y-users-service-2fqcvdzp6q-uc.a.run.app',
+  users:            'https://y-users-service-2fqcvdzp6q-uc.a.run.app',
   posts:            'https://y-posts-service-2fqcvdzp6q-ew.a.run.app'
 }
 
